@@ -1,6 +1,8 @@
+const jwt = require('jsonwebtoken');
 const router = require('express').Router();
 
 const { Blog, User } = require('../models');
+const { SECRET } = require('../util/config');
 
 const blogFinder = async (req, res, next) => {
   req.blog = await Blog.findByPk(req.params.id);
@@ -16,6 +18,7 @@ router.get('/', async (req, res) => {
 
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get('authorization');
+  console.log(authorization);
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     try {
       req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
