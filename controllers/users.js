@@ -17,12 +17,16 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const users = await User.findOne({
-    where: { id: req.params.id },
+  const users = await User.findByPk(req.params.id, {
     include: [
       {
         model: Blog,
         as: 'readings',
+        include: {
+          model: ReadingList,
+          where: { userId: req.params.id },
+          attributes: { exclude: ['blogId', 'userId'] },
+        },
         attributes: { exclude: ['userId'] },
         through: {
           attributes: [],
