@@ -35,4 +35,4 @@ ReadingList.init(
   }
 );
 
-module.exports = User;
+module.exports = ReadingList;
